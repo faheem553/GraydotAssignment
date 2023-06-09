@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .list-container,
+        .droppable-container {
+            width: 50%;
+            min-height: 200px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .item {
+            display: flex;
+            background-color: #f2f2f2;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+        .item.dragging {
+            opacity: 0.5;
+        }
+
+        button {
+            margin: 10px 0px;
+        }
+
+        img {
+            margin-right: 10px;
+            width: 100px;
+        }
+
+        @media screen and (max-width: 720px) {
+            .container {
+                display: block;
+                position: relative;
+                left: 0%;
+                top: 0%;
+            }
+
+            button {
+                display: flex;
+                margin: auto;
+
+            }
+
+            .list-container,
+        .droppable-container {
+            width: 100%;
+            min-height: 200px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="list-container" id="list-container">
+            <div class="item" draggable="true"><img
+                    src="https://images.pexels.com/photos/258244/pexels-photo-258244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    alt=""><span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum totam minima fugit iusto
+                    facilis assumenda debitis amet, dolor architecto nulla?</span></div>
+            <div class="item" draggable="true"><img
+                    src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    alt=""><span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum totam minima fugit iusto
+                    facilis assumenda debitis amet, dolor architecto nulla?</span></div>
+            <div class="item" draggable="true"><img
+                    src="https://images.pexels.com/photos/3819969/pexels-photo-3819969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    alt=""><span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum totam minima fugit iusto
+                    facilis assumenda debitis amet, dolor architecto nulla?</span></div>
+        </div>
+        <div class="droppable-container" id="droppable-container"></div>
+    </div>
+
+    <button onclick="resetContainers()">Reset</button>
+    <script>
+        // Get the containers
+        const listContainer = document.getElementById('list-container');
+        const droppableContainer = document.getElementById('droppable-container');
+
+        // Add event listeners to enable dragging and dropping
+        listContainer.addEventListener('dragstart', dragStart);
+        droppableContainer.addEventListener('dragover', dragOver);
+        droppableContainer.addEventListener('drop', drop);
+
+        // Function to handle drag start event
+        function dragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.innerHTML);
+            event.target.classList.add('dragging');
+        }
+
+        // Function to handle drag over event
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        // Function to handle drop event
+        function drop(event) {
+            event.preventDefault();
+            const data = event.dataTransfer.getData('text/plain');
+            const newItem = document.createElement('div');
+            newItem.classList.add('item');
+            newItem.innerHTML = data;
+            droppableContainer.appendChild(newItem);
+            event.target.classList.remove('dragging');
+            showMessage('Item dropped successfully!');
+        }
+
+        // Function to display a message
+        function showMessage(message) {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message');
+            messageContainer.innerHTML = message;
+            document.body.appendChild(messageContainer);
+            setTimeout(function () {
+                document.body.removeChild(messageContainer);
+            }, 2000);
+        }
+
+        // Function to reset the containers to their original state
+        function resetContainers() {
+            droppableContainer.innerHTML = '';
+            showMessage('Containers reset successfully!');
+        }
+
+
+
+    </script>
+</body>
+
+</html>
